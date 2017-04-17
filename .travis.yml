@@ -1,0 +1,18 @@
+language: bash
+services: docker
+
+env:
+  - PHP_VERSION=5.6
+  - PHP_VERSION=7.0
+  - PHP_VERSION=7.1
+
+before_script:
+  - env | sort
+  - cd "$PHP_VERSION"
+  - TAG_NAME="letsdockerize:"
+
+script:
+  - docker build -t "letsdockerize:php-${PHP_VERSION}" .
+
+after_script:
+  - docker images
