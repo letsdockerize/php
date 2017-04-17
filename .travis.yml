@@ -15,7 +15,7 @@ before_script:
   - TAG_NAME="letsdockerize:"
 
 script:
-  - docker build -t "letsdockerize:php-${PHP_VERSION}" ${VARIANT:-.}
+  - docker build -t "letsdockerize:php-${PHP_VERSION}" "${VARIANT:-.}"
 
 after_script:
   - docker images
