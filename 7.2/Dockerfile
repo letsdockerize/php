@@ -19,6 +19,16 @@ RUN apt-get install -yqq git \
         libsnmp-dev 
 #     libmcrypt-dev libpq-dev libvpx-dev libxpm-dev zlib1g-dev libfreetype6-dev libexpat1-dev unixodbc-dev libaspell-dev libpcre3-dev libtidy-dev
 
+# Install and run Composer
+RUN curl -sS https://getcomposer.org/installer | php
+RUN mv composer.phar /usr/local/bin/composer
+RUN chmod +x /usr/local/bin/composer
+
+# Install deployer
+RUN curl -LO https://deployer.org/deployer.phar
+RUN mv deployer.phar /usr/local/bin/dep
+RUN chmod +x /usr/local/bin/dep
+
 # Install PHP extensions
 # RUN docker-php-ext-install mbstring curl json intl gd xml zip bz2 opcache
 # - docker-php-ext-install mcrypt pdo_pgsql
@@ -62,13 +72,3 @@ RUN docker-php-ext-install bcmath bz2 calendar ctype curl dba dom enchant \
 # Install & enable Xdebug for code coverage reports
 # RUN pecl install xdebug
 # RUN docker-php-ext-enable xdebug
-
-# Install and run Composer
-# RUN curl -sS https://getcomposer.org/installer | php
-# RUN mv composer.phar /usr/local/bin/composer
-# RUN chmod +x /usr/local/bin/composer
-
-# Install deployer
-# RUN curl -LO https://deployer.org/deployer.phar
-# RUN mv deployer.phar /usr/local/bin/dep
-# RUN chmod +x /usr/local/bin/dep
