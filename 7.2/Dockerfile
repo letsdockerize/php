@@ -16,8 +16,10 @@ RUN apt-get install -yqq git \
         libpspell-dev \
         libedit-dev \
         librecode-dev \
-        libsnmp-dev 
+        libsnmp-dev \
 #     libmcrypt-dev libpq-dev libvpx-dev libxpm-dev zlib1g-dev libfreetype6-dev libexpat1-dev unixodbc-dev libaspell-dev libpcre3-dev libtidy-dev
+        gnupg \
+        nodejs
 
 # Install and run Composer
 RUN curl -sS https://getcomposer.org/installer | php
@@ -67,8 +69,7 @@ RUN docker-php-ext-install bcmath bz2 calendar ctype curl dba dom enchant \
 # docker-php-ext-configure imap --with-kerberos --with-imap-ssl && \
 # docker-php-ext-install imap \
 
-
-
 # Install & enable Xdebug for code coverage reports
-# RUN pecl install xdebug
-# RUN docker-php-ext-enable xdebug
+RUN pecl update-channels \
+ && pecl install xdebug \
+ && docker-php-ext-enable xdebug
