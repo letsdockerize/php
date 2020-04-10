@@ -1,0 +1,22 @@
+name: Docker Image CI
+
+on: push
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php_version: [5.6, 7.0, 7.1, 7.2]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Build the Docker image
+      run: docker build . --file ./${{ matrix.php_versoin }}/fpm/Dockerfile --tag my-image-name:${{ matrix.php_versoin }}-fpm
+
+    - name: show image list
+      run: docker image ls
