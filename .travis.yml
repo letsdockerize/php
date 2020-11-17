@@ -17,8 +17,6 @@ env:
 
 before_script:
   - env | sort
-  - cd "$PHP_VERSION"
-  - TAG_NAME="letsdockerize:"
 
 script:
 #   - docker build -t "letsdockerize:php-${PHP_VERSION}" "${VARIANT:-.}"
