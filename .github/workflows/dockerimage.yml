@@ -10,13 +10,13 @@ jobs:
 
     strategy:
       matrix:
-        php_version: [5.6, 7.0, 7.1, 7.2]
+        php_version: [5.6, 7.0, 7.1, 7.2, 7.3, 7.4]
 
     steps:
     - uses: actions/checkout@v2
 
     - name: Build the Docker image
-      run: docker build . --file ${{ matrix.php_version }}/fpm/Dockerfile --tag letsdockerize/php:${{ matrix.php_version }}-fpm
+      run: docker build --file ./Dockerfile --tag letsdockerize/php:${{ matrix.php_version }} .
 
     - name: show image list
       run: docker image ls
