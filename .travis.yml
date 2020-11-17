@@ -3,11 +3,17 @@ services: docker
 
 env:
   - PHP_VERSION=5.6
-  - PHP_VERSION=5.6 VARIANT=fpm
+#   - PHP_VERSION=5.6 VARIANT=fpm
   - PHP_VERSION=7.0
-  - PHP_VERSION=7.0 VARIANT=fpm
+#   - PHP_VERSION=7.0 VARIANT=fpm
   - PHP_VERSION=7.1
-  - PHP_VERSION=7.1 VARIANT=fpm
+#   - PHP_VERSION=7.1 VARIANT=fpm
+  - PHP_VERSION=7.2
+#   - PHP_VERSION=7.2 VARIANT=fpm
+  - PHP_VERSION=7.3
+#   - PHP_VERSION=7.3 VARIANT=fpm
+  - PHP_VERSION=7.4
+#   - PHP_VERSION=7.4 VARIANT=fpm
 
 before_script:
   - env | sort
@@ -15,7 +21,8 @@ before_script:
   - TAG_NAME="letsdockerize:"
 
 script:
-  - docker build -t "letsdockerize:php-${PHP_VERSION}" "${VARIANT:-.}"
+#   - docker build -t "letsdockerize:php-${PHP_VERSION}" "${VARIANT:-.}"
+  - docker build -f ./Dockerfile --build-arg "PHP_TAG_VERSION=${PHP_VERSION}" -t "letsdockerize/php:${PHP_VERSION}" .
 
 after_script:
   - docker images
