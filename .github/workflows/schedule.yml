@@ -1,6 +1,10 @@
 name: Schedule publish Docker Image
 
-on: push
+on:
+  push:
+    branchs: '**'
+    tags: '**'
+  pull_request:
 
 jobs:
   build:
@@ -12,15 +16,19 @@ jobs:
 
     steps:
     - name: Login to Docker Hub
+      if: github.event_name != 'pull_request'
       uses: docker/login-action@v1
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
+
     - name: Build and push
       id: docker_build
       uses: docker/build-push-action@v2
       with:
         build-args: PHP_TAG_VERSION=${{ matrix.php_version }}
+        push: ${{ github.event_name != 'pull_request' }}
         tags: letsdockerize/php:${{ matrix.php_version }}
+
     - name: Image digest
       run: echo ${{ steps.docker_build.outputs.digest }}
