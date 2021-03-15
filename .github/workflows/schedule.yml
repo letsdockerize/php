@@ -33,5 +33,4 @@ jobs:
     - name: Image digest
       run: |
         echo ${{ steps.docker_build.outputs.digest }}
-        echo "Deploying to production server on branch $GITHUB_REF"
-        echo ${{ github.base_ref }}
+        echo "Deploying to production server on branch $GITHUB_REF  ${GITHUB_REF#refs/*/}"
