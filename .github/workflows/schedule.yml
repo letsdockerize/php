@@ -31,4 +31,6 @@ jobs:
         tags: letsdockerize/php:${{ matrix.php_version }}
 
     - name: Image digest
-      run: echo ${{ steps.docker_build.outputs.digest }}
+      run: |
+        echo ${{ steps.docker_build.outputs.digest }}
+        echo "Deploying to production server on branch $GITHUB_REF"
