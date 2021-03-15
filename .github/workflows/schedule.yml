@@ -7,7 +7,7 @@ on:
 
 env:
   TAG_PREFIX: $([ ${GITHUB_REF#refs/*/} == "master" ] && echo "latest" || echo ${GITHUB_REF#refs/*/})
-  TAG_VERSION: $(${PHP_VERSION:0:1}.${PHP_VERSION:1:1})
+  TAG_VERSION: echo ${PHP_VERSION:0:1}.${PHP_VERSION:1:1}
 
 jobs:
   build:
