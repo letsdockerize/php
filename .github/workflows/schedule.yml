@@ -2,7 +2,8 @@ name: Schedule publish Docker Image
 
 on:
   push:
-    branchs: '**'
+    branchs:
+      - '**'
     tags: '**'
   pull_request:
 
