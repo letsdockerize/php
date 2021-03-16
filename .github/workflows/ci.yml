@@ -1,4 +1,4 @@
-name: CI
+name: GitHub CI
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
     tags: '**'
   pull_request:
   schedule:
-  - cron: '0 0 * * *'
+  - cron: '15 20 * * *'
 
 jobs:
   build:
