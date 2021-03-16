@@ -66,7 +66,9 @@ RUN set -eux; \
 RUN set -eux; \
     if [ $(php -r "echo PHP_MAJOR_VERSION;") != "7" ]; then \
         if [ $(php -r "echo PHP_MINOR_VERSION;") != "4" ]; then \
-            docker-php-ext-install hash \
+            if [ $(php -r "echo PHP_MAJOR_VERSION;") != "8" ]; then \
+                docker-php-ext-install hash \
+            ;fi \
         ;fi \
     ;fi
 RUN set -eux; docker-php-ext-install iconv
@@ -75,7 +77,10 @@ RUN set -eux; \
     docker-php-ext-configure imap --with-kerberos --with-imap-ssl ;\
     docker-php-ext-install imap
 RUN set -eux; docker-php-ext-install intl
-RUN set -eux; docker-php-ext-install json
+RUN set -eux; \
+    if [ $(php -r "echo PHP_MAJOR_VERSION;") != "8" ]; then \
+        docker-php-ext-install json \
+    ;fi
 RUN set -eux; \
     apt-get install -y libldap2-dev; \
     docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ ;\
@@ -85,8 +90,11 @@ RUN set -eux; \
         if [ $(php -r "echo PHP_MINOR_VERSION;") = "4" ]; then \
             apt-get install -yqq libonig-dev \
         ;fi \
-    ;fi ;\
-    docker-php-ext-install mbstring
+    ;fi
+RUN set -eux; \
+    if [ $(php -r "echo PHP_MAJOR_VERSION;") != "8" ]; then \
+        docker-php-ext-install mbstring \
+    ;fi
 RUN set -eux; docker-php-ext-install mysqli
 # RUN set -eux; docker-php-ext-install oci8
 # RUN set -eux; \
@@ -131,7 +139,10 @@ RUN set -eux; docker-php-ext-install sysvshm
 RUN set -eux; docker-php-ext-install tokenizer
 RUN set -eux; docker-php-ext-install xml
 # RUN set -eux; docker-php-ext-install xmlreader
-RUN set -eux; docker-php-ext-install xmlrpc
+RUN set -eux; \
+    if [ $(php -r "echo PHP_MAJOR_VERSION;") != "8" ]; then \
+        docker-php-ext-install xmlrpc \
+    ;fi
 RUN set -eux; docker-php-ext-install xmlwriter
 # RUN set -eux; docker-php-ext-install xsl
 # RUN set -eux; docker-php-ext-install zend_test
