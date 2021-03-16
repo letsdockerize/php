@@ -1,4 +1,4 @@
-name: Schedule publish Docker Image
+name: CI
 
 on:
   push:
