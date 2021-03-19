@@ -38,15 +38,9 @@ RUN set -eux; \
     mv deployer.phar /usr/local/bin/dep; \
     chmod +x /usr/local/bin/dep;
 
-RUN set -eux; docker-php-ext-install bcmath
-RUN set -eux; docker-php-ext-install bz2
-RUN set -eux; docker-php-ext-install calendar
-RUN set -eux; docker-php-ext-install ctype
-RUN set -eux; docker-php-ext-install curl
-RUN set -eux; docker-php-ext-install dba
-RUN set -eux; docker-php-ext-install dom
-RUN set -eux; docker-php-ext-install enchant
-RUN set -eux; docker-php-ext-install exif
+RUN set -eux; \
+    docker-php-ext-install bcmath bz2 calendar ctype curl dba dom enchant exif
+
 RUN set -eux; \
     if [ $(php -r "echo PHP_MAJOR_VERSION;") = "7" ]; then \
         if [ $(php -r "echo PHP_MINOR_VERSION;") = "4" ]; then \
@@ -123,18 +117,13 @@ RUN set -eux; docker-php-ext-install posix
 RUN set -eux; docker-php-ext-install pspell
 RUN set -eux; docker-php-ext-install readline
 # RUN set -eux; docker-php-ext-install reflection
-RUN set -eux; docker-php-ext-install session
-RUN set -eux; docker-php-ext-install shmop
-RUN set -eux; docker-php-ext-install simplexml
-RUN set -eux; docker-php-ext-install snmp
-RUN set -eux; docker-php-ext-install soap
-RUN set -eux; docker-php-ext-install sockets
+RUN set -eux; \
+    docker-php-ext-install session shmop simplexml snmp soap sockets
 # RUN set -eux; docker-php-ext-install sodium
 # RUN set -eux; docker-php-ext-install spl
 # RUN set -eux; docker-php-ext-install standard
-RUN set -eux; docker-php-ext-install sysvmsg
-RUN set -eux; docker-php-ext-install sysvsem
-RUN set -eux; docker-php-ext-install sysvshm
+RUN set -eux; \
+    docker-php-ext-install sysvmsg sysvsem sysvshm
 # RUN set -eux; docker-php-ext-install tidy
 RUN set -eux; docker-php-ext-install tokenizer
 RUN set -eux; docker-php-ext-install xml
