@@ -30,7 +30,8 @@ RUN set -eux; \
         apt-get install -yq libenchant-dev; \
     else \
         apt-get install -yq libenchant-2-dev; \
-    fi
+    fi; \
+    apt upgrade -yq --purge
 
 RUN set -eux; \
     # Install and run Composer
