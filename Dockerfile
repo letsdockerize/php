@@ -44,7 +44,13 @@ RUN set -eux; \
     chmod +x /usr/local/bin/dep;
 
 RUN set -eux; \
-    docker-php-ext-install bcmath bz2 calendar ctype curl dba dom enchant exif
+    docker-php-ext-install bcmath bz2 calendar ctype curl dba dom exif; \
+    if [ ${PHP_TAG_VERSION} = "5.6" ] || [ ${PHP_TAG_VERSION} = "7.0" ] || [ ${PHP_TAG_VERSION} = "7.1" ] || [ ${PHP_TAG_VERSION} = "7.2" ]; then \
+        docker-php-ext-install enchant; \
+    else \
+        # docker-php-ext-install enchant-2; \
+        echo "TODO: need implement"; \
+    fi
 
 RUN set -eux; \
     if [ $(php -r "echo PHP_MAJOR_VERSION;") = "7" ]; then \
