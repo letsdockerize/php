@@ -11,6 +11,7 @@ build-php:
 	docker build -f ./Dockerfile --build-arg PHP_TAG_VERSION=7.2 -t letsdockerize/php:7.2  .
 	docker build -f ./Dockerfile --build-arg PHP_TAG_VERSION=7.3 -t letsdockerize/php:7.3  .
 	docker build -f ./Dockerfile --build-arg PHP_TAG_VERSION=7.4 -t letsdockerize/php:7.4  .
+	docker build -f ./Dockerfile --build-arg PHP_TAG_VERSION=8.0 -t letsdockerize/php:8.0  .
 
 build-php-nc:
 	docker build --no-cache -f ./Dockerfile --build-arg PHP_TAG_VERSION=5.6 -t letsdockerize/php:5.6  .
@@ -19,6 +20,7 @@ build-php-nc:
 	docker build --no-cache -f ./Dockerfile --build-arg PHP_TAG_VERSION=7.2 -t letsdockerize/php:7.2  .
 	docker build --no-cache -f ./Dockerfile --build-arg PHP_TAG_VERSION=7.3 -t letsdockerize/php:7.3  .
 	docker build --no-cache -f ./Dockerfile --build-arg PHP_TAG_VERSION=7.4 -t letsdockerize/php:7.4  .
+	docker build --no-cache -f ./Dockerfile --build-arg PHP_TAG_VERSION=8.0 -t letsdockerize/php:8.0  .
 
 publish-php:
 	docker push letsdockerize/php:5.6
@@ -27,3 +29,4 @@ publish-php:
 	docker push letsdockerize/php:7.2
 	docker push letsdockerize/php:7.3
 	docker push letsdockerize/php:7.4
+	docker push letsdockerize/php:8.0
