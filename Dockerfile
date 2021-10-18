@@ -10,7 +10,6 @@ RUN set -eux; \
         libbz2-dev \
         libcurl4-gnutls-dev \
         libxml2-dev \
-        libenchant-dev \
         libjpeg-dev  \
         libpng-dev \
         libgmp3-dev \
@@ -26,7 +25,12 @@ RUN set -eux; \
         libzip-dev zip unzip \
         gnupg \
         nodejs \
-    ;
+    ; \
+    if [ ${PHP_TAG_VERSION} = "5.6" ] || [ ${PHP_TAG_VERSION} = "7.0" ] || [ ${PHP_TAG_VERSION} = "7.1" ] || [ ${PHP_TAG_VERSION} = "7.2" ]; then \
+        apt-get install -yq libenchant-dev; \
+    else \
+        apt-get install -yq libenchant-2-dev; \
+    fi
 
 RUN set -eux; \
     # Install and run Composer
