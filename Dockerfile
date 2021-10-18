@@ -126,7 +126,11 @@ RUN set -eux; docker-php-ext-install pgsql
 # RUN set -eux; docker-php-ext-install phar
 RUN set -eux; docker-php-ext-install posix
 RUN set -eux; docker-php-ext-install pspell
-RUN set -eux; docker-php-ext-install readline
+RUN set -eux; \
+    if [ ${PHP_TAG_VERSION} = "5.6" ] || [ ${PHP_TAG_VERSION} = "7.0" ] || [ ${PHP_TAG_VERSION} = "7.1" ] || [ ${PHP_TAG_VERSION} = "7.2" ]; then \
+        docker-php-ext-install readline; \
+    fi; \
+    php -m | grep -oiE '^readline$'
 # RUN set -eux; docker-php-ext-install reflection
 RUN set -eux; \
     docker-php-ext-install session shmop simplexml snmp soap sockets
