@@ -140,7 +140,10 @@ RUN set -eux; \
 RUN set -eux; \
     docker-php-ext-install sysvmsg sysvsem sysvshm
 # RUN set -eux; docker-php-ext-install tidy
-RUN set -eux; docker-php-ext-install tokenizer
+RUN set -eux; \
+    if [ $(PHP_TAG_VERSION) != "8.1" ]; then \
+        docker-php-ext-install tokenizer; \
+    fi
 RUN set -eux; docker-php-ext-install xml
 # RUN set -eux; docker-php-ext-install xmlreader
 RUN set -eux; \
