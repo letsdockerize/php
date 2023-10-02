@@ -26,7 +26,8 @@ RUN set -eux; \
         php${PHP_TAG_VERSION}-cli \
         php${PHP_TAG_VERSION}-fpm \
         php${PHP_TAG_VERSION}-curl \
-        php${PHP_TAG_VERSION}-decimal \
+        # decimal 不支援 5.6
+        # php${PHP_TAG_VERSION}-decimal \
         php${PHP_TAG_VERSION}-enchant \
         # ffi 不支援 7.3
         # php${PHP_TAG_VERSION}-ffi \
@@ -57,6 +58,9 @@ RUN set -eux; \
         # php${PHP_TAG_VERSION}-hash \
         ;
 RUN set -eux; \
+    if  [ ${PHP_TAG_VERSION} != "5.6" ]; then \
+        apt-get install -y php${PHP_TAG_VERSION}-decimal; \
+    fi; \
     if  [ ${PHP_TAG_VERSION} != "7.3" ] && \
         [ ${PHP_TAG_VERSION} != "7.2" ] && \
         [ ${PHP_TAG_VERSION} != "7.1" ]; then \
