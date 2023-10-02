@@ -63,7 +63,8 @@ RUN set -eux; \
     fi; \
     if  [ ${PHP_TAG_VERSION} != "7.3" ] && \
         [ ${PHP_TAG_VERSION} != "7.2" ] && \
-        [ ${PHP_TAG_VERSION} != "7.1" ]; then \
+        [ ${PHP_TAG_VERSION} != "7.1" ] && \
+        [ ${PHP_TAG_VERSION} != "5.6" ]; then \
         apt-get install -y php${PHP_TAG_VERSION}-ffi; \
     fi
 # RUN set -eux; \
@@ -127,7 +128,7 @@ RUN php${PHP_TAG_VERSION} -m
 
 RUN set -eux; \
     # Install and run Composer
-    curl -sS https://getcomposer.org/installer | phpphp${PHP_TAG_VERSION}; \
+    curl -sS https://getcomposer.org/installer | php${PHP_TAG_VERSION}; \
     mv composer.phar /usr/local/bin/composer; \
     chmod +x /usr/local/bin/composer; \
     # Install deployer
