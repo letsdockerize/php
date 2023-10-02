@@ -64,6 +64,7 @@ RUN set -eux; \
     if  [ ${PHP_TAG_VERSION} != "7.3" ] && \
         [ ${PHP_TAG_VERSION} != "7.2" ] && \
         [ ${PHP_TAG_VERSION} != "7.1" ] && \
+        [ ${PHP_TAG_VERSION} != "7.0" ] && \
         [ ${PHP_TAG_VERSION} != "5.6" ]; then \
         apt-get install -y php${PHP_TAG_VERSION}-ffi; \
     fi
