@@ -1,4 +1,4 @@
-[![GitHub Action](https://github.com/letsdockerize/php/workflows/GitHub%20CI/badge.svg)](https://github.com/letsdockerize/php/actions)
+[![GitHub CI](https://github.com/letsdockerize/php/actions/workflows/ci.yml/badge.svg)](https://github.com/letsdockerize/php/actions/workflows/ci.yml)
 
 # Let's Dockerize - PHP
 
