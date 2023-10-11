@@ -121,9 +121,13 @@ RUN set -eux; \
     if [ $(php -r "echo PHP_MAJOR_VERSION;") != "8" ]; then \
         apt-get install -y php${PHP_TAG_VERSION}-xmlrpc; \
         php -m | grep -oiE '^xmlrpc$'; \
-    fi
+    fi; \
 # RUN set -eux; docker-php-ext-install xsl
 # RUN set -eux; docker-php-ext-install zend_test
+    ### PECL
+    apt-get install -y php${PHP_TAG_VERSION}-dev; \
+    apt-get install -y php-pear; \
+    pecl channel-update pecl.php.net
 
 RUN php${PHP_TAG_VERSION} -m
 
