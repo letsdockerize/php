@@ -4,6 +4,8 @@ build-nc: build-php-nc
 
 publish: publish-php
 
+DEV_DOCKERFILE ?= ./Dockerfile
+
 build-php:
 	docker build -f ./Dockerfile --build-arg PHP_TAG_VERSION=8.3 -t letsdockerize/php:8.3 .
 	docker build -f ./Dockerfile --build-arg PHP_TAG_VERSION=8.2 -t letsdockerize/php:8.2 .
@@ -41,13 +43,13 @@ publish-php:
 	# docker push letsdockerize/php:5.6
 
 dev:
-	docker build -f ./Dockerfile-dev --build-arg PHP_TAG_VERSION=8.3 -t letsdockerize/php:8.3 .
-	docker build -f ./Dockerfile-dev --build-arg PHP_TAG_VERSION=8.2 -t letsdockerize/php:8.2 .
-	docker build -f ./Dockerfile-dev --build-arg PHP_TAG_VERSION=8.1 -t letsdockerize/php:8.1 .
-	docker build -f ./Dockerfile-dev --build-arg PHP_TAG_VERSION=8.0 -t letsdockerize/php:8.0 .
-	docker build -f ./Dockerfile-dev --build-arg PHP_TAG_VERSION=7.4 -t letsdockerize/php:7.4 .
-	# docker build -f ./Dockerfile-dev --build-arg PHP_TAG_VERSION=7.3 -t letsdockerize/php:7.3 .
-	# docker build -f ./Dockerfile-dev --build-arg PHP_TAG_VERSION=7.2 -t letsdockerize/php:7.2 .
-	# docker build -f ./Dockerfile-dev --build-arg PHP_TAG_VERSION=7.1 -t letsdockerize/php:7.1 .
-	# docker build -f ./Dockerfile-dev --build-arg PHP_TAG_VERSION=7.0 -t letsdockerize/php:7.0 .
-	# docker build -f ./Dockerfile-dev --build-arg PHP_TAG_VERSION=5.6 -t letsdockerize/php:5.6 .
+	docker build -f $(DEV_DOCKERFILE) --build-arg PHP_TAG_VERSION=8.3 -t letsdockerize/php:8.3 .
+	docker build -f $(DEV_DOCKERFILE) --build-arg PHP_TAG_VERSION=8.2 -t letsdockerize/php:8.2 .
+	docker build -f $(DEV_DOCKERFILE) --build-arg PHP_TAG_VERSION=8.1 -t letsdockerize/php:8.1 .
+	docker build -f $(DEV_DOCKERFILE) --build-arg PHP_TAG_VERSION=8.0 -t letsdockerize/php:8.0 .
+	docker build -f $(DEV_DOCKERFILE) --build-arg PHP_TAG_VERSION=7.4 -t letsdockerize/php:7.4 .
+	# docker build -f $(DEV_DOCKERFILE) --build-arg PHP_TAG_VERSION=7.3 -t letsdockerize/php:7.3 .
+	# docker build -f $(DEV_DOCKERFILE) --build-arg PHP_TAG_VERSION=7.2 -t letsdockerize/php:7.2 .
+	# docker build -f $(DEV_DOCKERFILE) --build-arg PHP_TAG_VERSION=7.1 -t letsdockerize/php:7.1 .
+	# docker build -f $(DEV_DOCKERFILE) --build-arg PHP_TAG_VERSION=7.0 -t letsdockerize/php:7.0 .
+	# docker build -f $(DEV_DOCKERFILE) --build-arg PHP_TAG_VERSION=5.6 -t letsdockerize/php:5.6 .
