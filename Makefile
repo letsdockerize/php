@@ -1,55 +1,71 @@
-build: build-php
+build: build-php-v6 build-php-v7
 
-build-nc: build-php-nc
+build-nc: build-php-v6-nc build-php-v7-nc
 
-publish: publish-php
+publish: publish-php-v6 publish-php-v7
 
 DEV_DOCKERFILE ?= ./Dockerfile
+PHP_VERSIONS ?= 8.3 8.2 8.1 8.0 7.4
 
-build-php:
-	docker build -f ./Dockerfile --build-arg PHP_TAG_VERSION=8.3 -t letsdockerize/php:8.3 .
-	docker build -f ./Dockerfile --build-arg PHP_TAG_VERSION=8.2 -t letsdockerize/php:8.2 .
-	docker build -f ./Dockerfile --build-arg PHP_TAG_VERSION=8.1 -t letsdockerize/php:8.1 .
-	docker build -f ./Dockerfile --build-arg PHP_TAG_VERSION=8.0 -t letsdockerize/php:8.0 .
-	docker build -f ./Dockerfile --build-arg PHP_TAG_VERSION=7.4 -t letsdockerize/php:7.4 .
-	# docker build -f ./Dockerfile --build-arg PHP_TAG_VERSION=7.3 -t letsdockerize/php:7.3 .
-	# docker build -f ./Dockerfile --build-arg PHP_TAG_VERSION=7.2 -t letsdockerize/php:7.2 .
-	# docker build -f ./Dockerfile --build-arg PHP_TAG_VERSION=7.1 -t letsdockerize/php:7.1 .
-	# docker build -f ./Dockerfile --build-arg PHP_TAG_VERSION=7.0 -t letsdockerize/php:7.0 .
-	# docker build -f ./Dockerfile --build-arg PHP_TAG_VERSION=5.6 -t letsdockerize/php:5.6 .
+DEPLOYER_V6_VERSION ?= 6.9.0
+DEPLOYER_V6_SHA256 ?= aa07877cba8578c3fb70d1ab6ff82d5971a7dcf196d532cb14e1dd0f1c752d78
+DEPLOYER_V7_VERSION ?= 7.5.12
+DEPLOYER_V7_SHA256 ?= b55c6609653e888c672d327c407f8bba6324b9c9cc24f9dcfb3f4b3922760632
 
-build-php-nc:
-	docker build --no-cache --pull -f ./Dockerfile --build-arg PHP_TAG_VERSION=8.3 -t letsdockerize/php:8.3 .
-	docker build --no-cache --pull -f ./Dockerfile --build-arg PHP_TAG_VERSION=8.2 -t letsdockerize/php:8.2 .
-	docker build --no-cache --pull -f ./Dockerfile --build-arg PHP_TAG_VERSION=8.1 -t letsdockerize/php:8.1 .
-	docker build --no-cache --pull -f ./Dockerfile --build-arg PHP_TAG_VERSION=8.0 -t letsdockerize/php:8.0 .
-	docker build --no-cache --pull -f ./Dockerfile --build-arg PHP_TAG_VERSION=7.4 -t letsdockerize/php:7.4 .
-	# docker build --no-cache --pull -f ./Dockerfile --build-arg PHP_TAG_VERSION=7.3 -t letsdockerize/php:7.3 .
-	# docker build --no-cache --pull -f ./Dockerfile --build-arg PHP_TAG_VERSION=7.2 -t letsdockerize/php:7.2 .
-	# docker build --no-cache --pull -f ./Dockerfile --build-arg PHP_TAG_VERSION=7.1 -t letsdockerize/php:7.1 .
-	# docker build --no-cache --pull -f ./Dockerfile --build-arg PHP_TAG_VERSION=7.0 -t letsdockerize/php:7.0 .
-	# docker build --no-cache --pull -f ./Dockerfile --build-arg PHP_TAG_VERSION=5.6 -t letsdockerize/php:5.6 .
+build-php: build-php-v6
 
-publish-php:
-	docker push letsdockerize/php:8.3
-	docker push letsdockerize/php:8.2
-	docker push letsdockerize/php:8.1
-	docker push letsdockerize/php:8.0
-	docker push letsdockerize/php:7.4
-	# docker push letsdockerize/php:7.3
-	# docker push letsdockerize/php:7.2
-	# docker push letsdockerize/php:7.1
-	# docker push letsdockerize/php:7.0
-	# docker push letsdockerize/php:5.6
+build-php-nc: build-php-v6-nc
+
+publish-php: publish-php-v6
+
+build-php-v6:
+	for v in $(PHP_VERSIONS); do \
+		docker build -f ./Dockerfile \
+			--build-arg PHP_TAG_VERSION=$$v \
+			--build-arg DEPLOYER_VERSION=$(DEPLOYER_V6_VERSION) \
+			--build-arg DEPLOYER_SHA256=$(DEPLOYER_V6_SHA256) \
+			-t letsdockerize/php:$$v-dep6 .; \
+		docker tag letsdockerize/php:$$v-dep6 letsdockerize/php:$$v; \
+	done
+
+build-php-v7:
+	for v in $(PHP_VERSIONS); do \
+		docker build -f ./Dockerfile \
+			--build-arg PHP_TAG_VERSION=$$v \
+			--build-arg DEPLOYER_VERSION=$(DEPLOYER_V7_VERSION) \
+			--build-arg DEPLOYER_SHA256=$(DEPLOYER_V7_SHA256) \
+			-t letsdockerize/php:$$v-dep7 .; \
+	done
+
+build-php-v6-nc:
+	for v in $(PHP_VERSIONS); do \
+		docker build --no-cache --pull -f ./Dockerfile \
+			--build-arg PHP_TAG_VERSION=$$v \
+			--build-arg DEPLOYER_VERSION=$(DEPLOYER_V6_VERSION) \
+			--build-arg DEPLOYER_SHA256=$(DEPLOYER_V6_SHA256) \
+			-t letsdockerize/php:$$v-dep6 .; \
+		docker tag letsdockerize/php:$$v-dep6 letsdockerize/php:$$v; \
+	done
+
+build-php-v7-nc:
+	for v in $(PHP_VERSIONS); do \
+		docker build --no-cache --pull -f ./Dockerfile \
+			--build-arg PHP_TAG_VERSION=$$v \
+			--build-arg DEPLOYER_VERSION=$(DEPLOYER_V7_VERSION) \
+			--build-arg DEPLOYER_SHA256=$(DEPLOYER_V7_SHA256) \
+			-t letsdockerize/php:$$v-dep7 .; \
+	done
+
+publish-php-v6:
+	for v in $(PHP_VERSIONS); do \
+		docker push letsdockerize/php:$$v-dep6; \
+		docker push letsdockerize/php:$$v; \
+	done
+
+publish-php-v7:
+	for v in $(PHP_VERSIONS); do docker push letsdockerize/php:$$v-dep7; done
 
 dev:
-	docker build -f $(DEV_DOCKERFILE) --build-arg PHP_TAG_VERSION=8.3 -t letsdockerize/php:8.3 .
-	docker build -f $(DEV_DOCKERFILE) --build-arg PHP_TAG_VERSION=8.2 -t letsdockerize/php:8.2 .
-	docker build -f $(DEV_DOCKERFILE) --build-arg PHP_TAG_VERSION=8.1 -t letsdockerize/php:8.1 .
-	docker build -f $(DEV_DOCKERFILE) --build-arg PHP_TAG_VERSION=8.0 -t letsdockerize/php:8.0 .
-	docker build -f $(DEV_DOCKERFILE) --build-arg PHP_TAG_VERSION=7.4 -t letsdockerize/php:7.4 .
-	# docker build -f $(DEV_DOCKERFILE) --build-arg PHP_TAG_VERSION=7.3 -t letsdockerize/php:7.3 .
-	# docker build -f $(DEV_DOCKERFILE) --build-arg PHP_TAG_VERSION=7.2 -t letsdockerize/php:7.2 .
-	# docker build -f $(DEV_DOCKERFILE) --build-arg PHP_TAG_VERSION=7.1 -t letsdockerize/php:7.1 .
-	# docker build -f $(DEV_DOCKERFILE) --build-arg PHP_TAG_VERSION=7.0 -t letsdockerize/php:7.0 .
-	# docker build -f $(DEV_DOCKERFILE) --build-arg PHP_TAG_VERSION=5.6 -t letsdockerize/php:5.6 .
+	for v in $(PHP_VERSIONS); do \
+		docker build -f $(DEV_DOCKERFILE) --build-arg PHP_TAG_VERSION=$$v -t letsdockerize/php:$$v .; \
+	done
