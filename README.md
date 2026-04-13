@@ -45,7 +45,7 @@ docker build -f Dockerfile --build-arg PHP_TAG_VERSION=8.3 -t letsdockerize/php:
 
 Optional build arguments:
 
-- COMPOSER_VERSION (default: 2.8.8)
+- COMPOSER_VERSION (default: 2.9.5)
 - DEPLOYER_VERSION (default: 7.5.12)
 - DEPLOYER_SHA256 (pinned checksum for the selected Deployer version)
 
@@ -53,7 +53,7 @@ Example:
 
 docker build -f Dockerfile \
 	--build-arg PHP_TAG_VERSION=8.3 \
-	--build-arg COMPOSER_VERSION=2.8.8 \
+	--build-arg COMPOSER_VERSION=2.9.5 \
 	--build-arg DEPLOYER_VERSION=7.5.12 \
 	--build-arg DEPLOYER_SHA256=b55c6609653e888c672d327c407f8bba6324b9c9cc24f9dcfb3f4b3922760632 \
 	-t letsdockerize/php:8.3 .
