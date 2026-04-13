@@ -1,18 +1,20 @@
-FROM debian:11-slim
+FROM debian:12-slim
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG PHP_TAG_VERSION
+ARG COMPOSER_VERSION=2.8.8
+ARG DEPLOYER_VERSION=7.5.12
+ARG DEPLOYER_SHA256=b55c6609653e888c672d327c407f8bba6324b9c9cc24f9dcfb3f4b3922760632
 
 RUN set -eux; \
     apt-get update; \
-    apt-get install -y apt-transport-https lsb-release ca-certificates curl wget; \
+    apt-get install -y --no-install-recommends apt-transport-https lsb-release ca-certificates curl wget; \
     wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg; \
     echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/php.list; \
     apt-get update; \
-    apt-get install -yq git libzip-dev zip unzip gnupg \
+    apt-get install -yq --no-install-recommends git libzip-dev zip unzip gnupg \
         # nodejs \
-    ; \
-    apt upgrade -yq --purge
+    ;
 
 RUN set -eux; \
     # apt-get install -y php${PHP_TAG_VERSION}
@@ -110,7 +112,7 @@ RUN if [ ${PHP_TAG_VERSION} = "5.6" ] || [ ${PHP_TAG_VERSION} = "7.0" ] || [ ${P
 #     docker-php-ext-install sysvmsg sysvsem sysvshm
 # RUN set -eux; docker-php-ext-install tidy
 RUN set -eux; \
-    if [ $(PHP_TAG_VERSION) != "8.1" ]; then \
+    if [ ${PHP_TAG_VERSION} != "8.1" ]; then \
         apt-get install -y php${PHP_TAG_VERSION}-tokenizer; \
         php -m | grep -oiE '^tokenizer$'; \
     fi
@@ -132,11 +134,18 @@ RUN set -eux; \
 RUN php${PHP_TAG_VERSION} -m
 
 RUN set -eux; \
-    # Install and run Composer
-    curl -sS https://getcomposer.org/installer | php${PHP_TAG_VERSION}; \
+    # Install and verify Composer
+    curl -fsSL -o /tmp/composer-setup.php https://getcomposer.org/installer; \
+    curl -fsSL -o /tmp/composer-setup.sig https://composer.github.io/installer.sig; \
+    echo "$(cat /tmp/composer-setup.sig)  /tmp/composer-setup.php" | sha384sum -c -; \
+    php${PHP_TAG_VERSION} /tmp/composer-setup.php --version=${COMPOSER_VERSION}; \
     mv composer.phar /usr/local/bin/composer; \
     chmod +x /usr/local/bin/composer; \
-    # Install deployer
-    curl -LO https://deployer.org/deployer.phar; \
-    mv deployer.phar /usr/local/bin/dep; \
-    chmod +x /usr/local/bin/dep;
+    rm -f /tmp/composer-setup.php /tmp/composer-setup.sig; \
+    # Install and verify deployer
+    curl -fsSL -o /tmp/deployer.phar https://deployer.org/releases/v${DEPLOYER_VERSION}/deployer.phar; \
+    echo "${DEPLOYER_SHA256}  /tmp/deployer.phar" | sha256sum -c -; \
+    mv /tmp/deployer.phar /usr/local/bin/dep; \
+    chmod +x /usr/local/bin/dep; \
+    apt-get clean; \
+    rm -rf /var/lib/apt/lists/*
